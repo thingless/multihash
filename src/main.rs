@@ -11,14 +11,9 @@ fn main() -> std::io::Result<()> {
 
     let mut hasher = Sha256::new();
     loop {
-        let res = stdin.read(&mut buf);
-        match res {
-            Ok(v) => {
-                hasher.input(&buf[0..v]);
-                if v == 0 {
-                    break
-                }
-            },
+        match stdin.read(&mut buf) {
+            Ok(0) => break,
+            Ok(v) => hasher.input(&buf[0..v]),
             Err(_) => break,
         }
     }
