@@ -6,11 +6,22 @@ use self::crypto::digest::Digest;
 use self::crypto::sha2::Sha256;
 use self::crypto::sha2::Sha224;
 
+struct Hasher {
+    name: String,
+    hasher: Box<Digest>,
+}
+
 fn main() -> std::io::Result<()> {
     let mut stdin = std::io::stdin();
-    let mut hashers : [Box<Digest>; 2] = [
-        Box::new(Sha256::new()), 
-        Box::new(Sha224::new())
+    let mut hashes : [Hasher; 2] = [
+        Hasher {
+            name: String::from("Sha256"),
+            hasher: Box::new(Sha256::new()),
+        },
+        Hasher {
+            name: String::from("Sha224"),
+            hasher: Box::new(Sha224::new()),
+        },
     ];
     let mut buf: [u8; 1024] = [0; 1024];
 
@@ -19,16 +30,15 @@ fn main() -> std::io::Result<()> {
             Ok(0) => break,
             Err(e) => panic!(e),
             Ok(v) => {
-                for hasher in hashers.iter_mut() {
-                    hasher.input(&buf[0..v]);
+                for hash in hashes.iter_mut() {
+                    hash.hasher.input(&buf[0..v]);
                 }
             },
         }
     }
 
-    for hasher in hashers.iter_mut() {
-        let hex = hasher.result_str();
-        println!("some hash: {}", hex);
+    for hash in hashes.iter_mut() {
+        println!("{}: {}", hash.name, hash.hasher.result_str());
     }
     Ok(())
 }
