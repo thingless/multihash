@@ -1,0 +1,34 @@
+TODO
+
+binary  checksum        where is it used
+4       magic bytes
+2       version number
+2       self length
+1       flags           # currently two flags: it's a literal, signature follows
+8       length
+4       sum32
+4       crc-32          #
+8       crc-64          #
+32      BLAKE2s         # librsync 1.0+ strong checksum
+64      BLAKE2b         # maybe IPFS uses this
+16      MD4             # librsync 0.9- strong checksum
+16      MD5             # md5sum
+20      ripemd160       # bitcoin uses it
+20      SHA-1           # shasum
+32      SHA-256         #
+64      SHA-512         #
+32      SHA-3-256       # no one uses SHA-3
+64      SHA-3-512       # no one uses SHA-3
+64      whirlpool       #
+4       XXH32           # 
+8       XXH64           # no one really uses it but it's fast to calculate
+4       <custom>        rsync's rolling checksum [https://github.com/librsync/librsync/blob/master/src/rollsum.h]
+20      <custom>        git's blob storage SHA
+20      <custom>        first chunk of torrent file (zero-padded if needed) - 256K
+20      <custom>        first chunk of torrent file (zero-padded if needed) - 512K
+20      <custom>        first chunk of torrent file (zero-padded if needed) - 1M
+
+--
+20      signing PGP key fingerprint
+1024-4096 public key
+200-500 signature

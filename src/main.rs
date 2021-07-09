@@ -3,9 +3,9 @@ extern crate multihash;
 fn main() -> std::io::Result<()> {
     let options = multihash::Options {
         binary: false,
-        input: std::io::stdin(),
-        output: std::io::stdout(),
+        input: multihash::InputFile::Stdin,
+        output: multihash::OutputFile::Stdout,
     };
-    multihash::multihash(options)?;
+    multihash::run(options)?;
     Ok(())
 }
